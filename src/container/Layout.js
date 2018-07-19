@@ -4,7 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
+import Notifications from "@material-ui/icons/Notifications";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import MenuList from "@material-ui/core/MenuList";
@@ -14,6 +14,10 @@ import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import DraftsIcon from "@material-ui/icons/Drafts";
 import SendIcon from "@material-ui/icons/Send";
+import styled from "styled-components";
+import Avatar from "@material-ui/core/Avatar";
+
+import { Link } from "react-router-dom";
 
 const drawerWidth = 275;
 
@@ -31,9 +35,16 @@ const styles = theme => ({
   },
   topBar: {
     background:
-      "linear-gradient(to right, rgba(0,142,158,1) 0%, rgba(0,142,158,1) 20%, rgba(255,0,132,1) 100%)"
+      "linear-gradient(to right, rgba(0,142,158,1) 0%, rgba(0,142,158,1) 40%, #ff7161 100%)"
   },
-  toolbar: theme.mixins.toolbar,
+  toolbar: {
+    ...theme.mixins.toolbar,
+    minHeight: 48
+  },
+  bigAvatar: {
+    width: 150,
+    height: 150
+  },
   menuItem: {
     "&:focus": {
       backgroundColor: "rgba(0,142,158,1)",
@@ -47,9 +58,23 @@ const styles = theme => ({
   content: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
-    padding: theme.spacing.unit * 3
+    padding: theme.spacing.unit * 3,
+    paddingTop: 110
   }
 });
+
+const ToolbarWrapper = styled.div`
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-end;
+  align-items: center;
+`;
+const AvatarWrapper = styled.div`
+  display: flex;
+  margin: 50px;
+  justify-content: center;
+  align-items: center;
+`;
 
 class ResponsiveDrawer extends React.Component {
   state = {
@@ -66,7 +91,7 @@ class ResponsiveDrawer extends React.Component {
     return (
       <div className={classes.root}>
         <AppBar className={classes.appBar}>
-          <Toolbar className={classes.topBar}>
+          <Toolbar style={{ minHeight: 55}} className={classes.topBar}>
             <IconButton
               color="inherit"
               aria-label="Open drawer"
@@ -74,14 +99,14 @@ class ResponsiveDrawer extends React.Component {
             >
               <MenuIcon />
             </IconButton>
+            <ToolbarWrapper>
+              <IconButton aria-haspopup="true" color="inherit">
+                <Notifications />
+              </IconButton>
+            </ToolbarWrapper>
           </Toolbar>
         </AppBar>
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
-          <Typography noWrap>
-            {"You think water moves fast? You should see ice."}
-          </Typography>
-        </main>
+        <main className={classes.content}>{this.props.children}</main>
         <Drawer
           open={this.state.isOpen}
           classes={{
@@ -89,35 +114,50 @@ class ResponsiveDrawer extends React.Component {
           }}
           onClose={this.handleDrawerToggle}
         >
+          <AvatarWrapper>
+            <Avatar
+              alt="Remy Sharp"
+              src="https://hips.hearstapps.com/del.h-cdn.co/assets/18/11/2048x1365/gallery-1520956952-chicken-tacos-horizontal.jpg?resize=980:*"
+              className={classes.bigAvatar}
+            />
+          </AvatarWrapper>
           <MenuList>
-            <MenuItem className={classes.menuItem}>
+            <MenuItem component={Link} to="/home" className={classes.menuItem}>
               <ListItemIcon className={classes.icon}>
                 <SendIcon />
               </ListItemIcon>
               <ListItemText
                 classes={{ primary: classes.primary }}
                 inset
-                primary="Sent mail"
+                primary="Accueil"
               />
             </MenuItem>
-            <MenuItem className={classes.menuItem}>
+            <MenuItem
+              component={Link}
+              to="/dashboard"
+              className={classes.menuItem}
+            >
               <ListItemIcon className={classes.icon}>
                 <DraftsIcon />
               </ListItemIcon>
               <ListItemText
                 classes={{ primary: classes.primary }}
                 inset
-                primary="Drafts"
+                primary="Dashboard"
               />
             </MenuItem>
-            <MenuItem className={classes.menuItem}>
+            <MenuItem
+              component={Link}
+              to="/esperluette"
+              className={classes.menuItem}
+            >
               <ListItemIcon className={classes.icon}>
                 <InboxIcon />
               </ListItemIcon>
               <ListItemText
                 classes={{ primary: classes.primary }}
                 inset
-                primary="Inbox"
+                primary="Esperluette"
               />
             </MenuItem>
           </MenuList>
