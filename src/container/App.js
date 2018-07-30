@@ -7,7 +7,9 @@ import "../globalStyles";
 
 class App extends Component {
   render() {
-    const { match: { path } } = this.props;
+    const {
+      match: { path }
+    } = this.props;
 
     return (
       <Fragment>
